@@ -18,6 +18,34 @@ jobs:
           registry-url: https://registry.npmjs.org
       - run: npm ci
       - run: npm test
-      - run: npm publish --provenance
+
+      # The tag names the version being released; letting the two drift apart
+      # would put on the registry something nobody asked for.
+      - name: Check the tag against package.json
+        run: |
+          tagged="${GITHUB_REF_NAME#v}"
+          declared="$(node -p 'require("./package.json").version')"
+          if [ "$tagged" != "$declared" ]; then
+            echo "::error::tag $GITHUB_REF_NAME carries $tagged, package.json declares $declared"
+            exit 1
+          fi
+
+      # A published version is immutable, so republishing it always fails. A tag
+      # pushed for any other reason — a re-tag, a release created by hand, a
+      # version already published from a laptop — must not turn the run red.
+      - name: Look for the version on the registry
+        id: registry
+        run: |
+          name="$(node -p 'require("./package.json").name')"
+          version="$(node -p 'require("./package.json").version')"
+          if npm view "$name@$version" version >/dev/null 2>&1; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::$name@$version is already on the registry, nothing to publish"
+          else
+            echo "published=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - if: steps.registry.outputs.published == 'false'
+        run: npm publish --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
