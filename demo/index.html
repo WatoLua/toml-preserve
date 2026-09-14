@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>@watolua/toml — formatting-preserving TOML</title>
+  <meta name="description" content="Paste a flattened TOML file and a well-formatted one: values come from the first, layout from the second.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="page">
+    <header>
+      <p class="eyebrow">@watolua/toml</p>
+      <h1>Give a flattened TOML file its layout back</h1>
+      <p class="lede">
+        Paste the damaged file on the left and a well-formatted one in the middle: the values come from
+        the first, the layout from the second. Without a template the file is simply reformatted &mdash;
+        comments missing from the source cannot be invented.
+        <a href="https://www.npmjs.com/package/@watolua/toml">npm</a> &middot;
+        <a href="https://github.com/WatoLua/toml-preserve">source</a>
+      </p>
+    </header>
+
+    <p class="install">npm install @watolua/toml</p>
+
+    <div class="toolbar">
+      <button type="button" id="load-example" class="primary">Load an example</button>
+      <button type="button" id="swap">Use the result as source</button>
+      <button type="button" id="clear">Clear everything</button>
+    </div>
+
+    <div class="panes">
+      <section class="pane">
+        <div class="pane-head">
+          <label class="eyebrow" for="broken">TOML to repair</label>
+          <span class="pane-hint" id="broken-hint">&nbsp;</span>
+        </div>
+        <textarea id="broken" spellcheck="false" autocapitalize="off" autocorrect="off"
+          placeholder="Paste the TOML whose layout was destroyed."></textarea>
+      </section>
+
+      <section class="pane">
+        <div class="pane-head">
+          <label class="eyebrow" for="template">Well-formatted template &mdash; optional</label>
+          <span class="pane-hint" id="template-hint">&nbsp;</span>
+        </div>
+        <textarea id="template" spellcheck="false" autocapitalize="off" autocorrect="off"
+          placeholder="Paste the last healthy version of the same file, the one in Git for instance. Leave empty to only reformat."></textarea>
+      </section>
+    </div>
+
+    <div class="status" id="status" data-state="idle" role="status" aria-live="polite">
+      <span class="status-text" id="status-text">Loading the library&hellip;</span>
+      <span class="metrics" id="metrics"></span>
+      <button type="button" id="copy">Copy the result</button>
+    </div>
+
+    <section class="pane">
+      <div class="pane-head">
+        <label class="eyebrow" for="result">Result</label>
+        <span class="pane-hint">read-only</span>
+      </div>
+      <textarea id="result" readonly spellcheck="false" placeholder="The result appears here."></textarea>
+    </section>
+
+    <footer>
+      <p><strong>What the template restores:</strong> comments, key order, blank lines, indentation,
+        the column of aligned <code>=</code> signs, sections against inline tables, string style and
+        number notation.</p>
+      <p><strong>What it cannot do:</strong> update a comment describing a value you changed, or invent
+        a comment for a key the template does not hold.</p>
+      <p>This page runs the published package, unbundled: it imports the same
+        <code>dist/</code> files <code>npm install</code> delivers.</p>
+    </footer>
+  </div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

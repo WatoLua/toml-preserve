@@ -1,0 +1,25 @@
+# Editors read this file on their own to format consistently across machines.
+# https://editorconfig.org
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Trailing spaces are content here: the fixtures exist to check that the library
+# preserves a file exactly, and an editor silently trimming them would turn a
+# real test into a passing one.
+[src/testing/*.ts]
+trim_trailing_whitespace = false
+
+# Two trailing spaces mean a line break in Markdown.
+[*.md]
+trim_trailing_whitespace = false
+
+[Makefile]
+indent_style = tab

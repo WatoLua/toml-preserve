@@ -1,0 +1,62 @@
+{
+  "name": "@watolua/toml",
+  "version": "1.0.0",
+  "description": "Read and write TOML without losing its formatting: comments, key order, indentation and alignment survive a round trip. Try it live at https://watolua.github.io/toml-preserve/",
+  "keywords": [
+    "toml",
+    "parser",
+    "formatting-preserving",
+    "round-trip",
+    "comments",
+    "ast"
+  ],
+  "license": "MIT",
+  "author": "watolua",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WatoLua/toml-preserve.git"
+  },
+  "bugs": "https://github.com/WatoLua/toml-preserve/issues",
+  "homepage": "https://watolua.github.io/toml-preserve/",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./testing": {
+      "types": "./dist/testing/toml-fixtures.d.ts",
+      "default": "./dist/testing/toml-fixtures.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "rm -rf dist",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepublishOnly": "npm run clean && npm run build && npm test",
+    "demo": "npm run build && node scripts/build-demo.mjs",
+    "demo:serve": "npm run demo && python3 -m http.server 8080 --directory demo"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.3",
+    "vitest": "^3.2.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
